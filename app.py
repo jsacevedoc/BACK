@@ -1,4 +1,5 @@
 from flask import Flask, render_template, make_response, jsonify, request
+import requests
 
 app = Flask(__name__)
 
@@ -80,6 +81,15 @@ def create_col(collection):
 
     res = make_response(jsonify({"message": "Collection created"}), 201)
     return res
+
+@app.route("/email/<email>", methods=["POST"])
+def email_verification(email):
+    res = requests.get('https://emailverification.whoisxmlapi.com/api/v2?apiKey=at_yHxvRIV7b87JtYvmphqND9xIbZXTI&emailAddress=' + email)
+    if res:
+        json_result = res.json()
+        return json_result
+    else:
+        return "------------------ERROR-------------------------"
 
 # Put Method
 
