@@ -1,5 +1,6 @@
 from flask import Flask, render_template, make_response, jsonify, request
 import requests
+import re
 
 app = Flask(__name__)
 
@@ -84,12 +85,10 @@ def create_col(collection):
 
 @app.route("/email/<email>", methods=["GET", "POST"])
 def email_verification(email):
-    res = requests.get('https://emailverification.whoisxmlapi.com/api/v2?apiKey=at_yHxvRIV7b87JtYvmphqND9xIbZXTI&emailAddress=' + email)
-    if res:
-        json_result = res.json()
-        return make_response(json_result)
+    if re.match('^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,15}$',email.lower()):
+        return make_response(jsonify({"Result":"El correo tiene una sintaxis valida"}))
     else:
-        return  make_response(jsonify("---------ERROR-------"))
+        return  make_response(jsonify({"Result":"El correo no tiene una sintaxis valida"}))
 
 # Put Method
 
