@@ -82,14 +82,14 @@ def create_col(collection):
     res = make_response(jsonify({"message": "Collection created"}), 201)
     return res
 
-@app.route("/email/<email>", methods=["POST"])
+@app.route("/email/<email>", methods=["GET", "POST"])
 def email_verification(email):
     res = requests.get('https://emailverification.whoisxmlapi.com/api/v2?apiKey=at_yHxvRIV7b87JtYvmphqND9xIbZXTI&emailAddress=' + email)
     if res:
         json_result = res.json()
-        return json_result
+        return make_response(json_result)
     else:
-        return "------------------ERROR-------------------------"
+        return  make_response(jsonify("---------ERROR-------"))
 
 # Put Method
 
