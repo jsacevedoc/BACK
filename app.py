@@ -72,6 +72,17 @@ def get_data(collection, member):
     res = make_response(jsonify({"error": "Not found"}), 404)
     return res
 
+@app.route("/users")   #get data with path 
+def get_users():
+    users_list = get_all_users()
+    if users_list:
+        res = make_response(jsonify({"res":users_list}), 200)
+        return res
+
+    res = make_response(jsonify({"error": "Not found"}), 404)
+    return res
+
+
 # Post Method
 
 @app.route("/json/<collection>", methods=["POST"])
