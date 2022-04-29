@@ -1,5 +1,5 @@
 from flask import Flask, render_template, make_response, jsonify, request
-from db import count_users, get_all_users, update_email
+from db import count_users, get_all_users, get_user, update_email
 import requests
 import re
 
@@ -75,11 +75,23 @@ def get_data(collection, member):
 @app.route("/users")   #get data with path 
 def get_users():
     users_list = get_all_users()
-    for user in users_list:
-        del user['_id']
 
     if users_list:
+        for user in users_list:
+            del user['_id']
         res = make_response(jsonify({"res":users_list}), 200)
+        return res
+
+    res = make_response(jsonify({"error": "Not found"}), 404)
+    return res
+
+@app.route("/users/<username>")   #get data with path 
+def get_user_by_username(username):
+    user = get_user(username)
+    
+    if user:
+        del user['_id']
+        res = make_response(jsonify({"res":user}), 200)
         return res
 
     res = make_response(jsonify({"error": "Not found"}), 404)

@@ -11,6 +11,9 @@ def count_users():
 def get_all_users():
     return list(users.find())
 
+def get_user(username):
+    return users.find_one({"user_name": username})
+
 def update_email(email,newEmail):
     try:
         myquery = { "email_address": email }
