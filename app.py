@@ -117,20 +117,20 @@ def create_col(collection):
 @app.route("/email/<email>", methods=["GET", "POST"])
 def email_verification(email):
     if re.match('^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,15}$',email.lower()):
-        return make_response(jsonify({"Result":"El correo tiene una sintaxis valida"}))
+        return make_response(jsonify({"Result":"The email has a valid syntax"}))
     else:
-        return  make_response(jsonify({"Result":"El correo no tiene una sintaxis valida"}))
+        return  make_response(jsonify({"Result":"The mail does not have a valid syntax"}))
 
 # Put Method
 
-@app.route("/newemail/<email>/<newEmail>", methods=["GET", "POST","PUT"])
-def put_col_mem(email,newEmail):
-    result = update_email(email,newEmail)
+@app.route("/newemail/<email>/<new_email>", methods=["GET", "POST","PUT"])
+def put_col_mem(email,new_email):
+    result = update_email(email,new_email)
     if result:
         res = make_response(jsonify({"res":"UPDATE SUCCESFULLY"}), 200)
         return res
     else:
-        res = make_response(jsonify({"error": "--------ERROR-----"}), 404)
+        res = make_response(jsonify({"error": "NOT FOUND"}), 404)
         return res
 
 # Delete Method
