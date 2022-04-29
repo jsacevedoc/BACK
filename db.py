@@ -1,4 +1,3 @@
-from sympy import false
 from pymongo import MongoClient
 
 client = MongoClient("mongodb+srv://arq:admin@arq.hs1ao.mongodb.net/users_db?retryWrites=true&w=majority")
