@@ -1,5 +1,5 @@
 from flask import Flask, render_template, make_response, jsonify, request
-from db import count_users, get_all_users
+from db import count_users, get_all_users,update_email
 import requests
 import re
 
@@ -97,23 +97,15 @@ def email_verification(email):
 
 # Put Method
 
-@app.route("/json/<collection>/<member>", methods=["PUT"])
-def put_col_mem(collection,member):
-
-    req = request.get_json()
-
-    if collection in INFO:
-        if member:
-            print(req)
-            INFO[collection][member] = req["new"]
-            res = make_response(jsonify({"res":INFO[collection]}), 200)
-            return res
-
-        res = make_response(jsonify({"error": "No member found"}), 404)
+@app.route("/newemail/<email>/<newEmail>", methods=["GET", "POST","PUT"])
+def put_col_mem(email,newEmail):
+    result = update_email(email,newEmail)
+    if result:
+        res = make_response(jsonify({"res":"UPDATE SUCCESFULLY"}), 200)
         return res
-
-    res = make_response(jsonify({"error": "No collection found"}), 404)
-    return res
+    else:
+        res = make_response(jsonify({"error": "--------ERROR-----"}), 404)
+        return res
 
 # Delete Method
 

@@ -1,3 +1,4 @@
+from sympy import false
 from pymongo import MongoClient
 
 client = MongoClient("mongodb+srv://arq:admin@arq.hs1ao.mongodb.net/users_db?retryWrites=true&w=majority")
@@ -10,3 +11,12 @@ def count_users():
 
 def get_all_users():
     return list(users.find())
+
+def update_email(email,newEmail):
+    try:
+        myquery = { "email_address": email }
+        newvalues = { "$set": { "email_address": newEmail } }
+        users.update_one(myquery, newvalues)
+        return True
+    except:
+        return False
