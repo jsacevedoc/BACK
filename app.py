@@ -124,7 +124,7 @@ def email_verification(email):
 # Put Method
 
 @app.route("/newemail/<email>/<new_email>", methods=["GET", "POST","PUT"])
-def put_col_mem(email,new_email):
+def email_update(email,new_email):
     result = update_email(email,new_email)
     if result:
         res = make_response(jsonify({"res":"UPDATE SUCCESFULLY"}), 200)
