@@ -3,6 +3,8 @@ from db import count_users, get_all_users, get_user, update_email
 import requests
 import re
 
+from helpers.user import phone_validation
+
 app = Flask(__name__)
 
 PORT = 3200
