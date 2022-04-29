@@ -1,4 +1,5 @@
 from flask import Flask, render_template, make_response, jsonify, request
+from db import count_users, get_all_users
 import requests
 import re
 
@@ -28,6 +29,10 @@ INFO = {
 
 @app.route("/")
 def home():
+   print("Users count")
+   print(count_users())
+   print("All users")
+   print(get_all_users())
    return "<h1 style='color:red'>This is home!</h1>"
 
 @app.route('/temp')
