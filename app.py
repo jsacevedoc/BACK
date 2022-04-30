@@ -1,9 +1,9 @@
 from flask import Flask, render_template, make_response, jsonify, request
-from db import count_users, get_all_users, get_user, update_email
+from db import count_users, get_all_users, get_user, update_email, update_phone_number
 import requests
 import re
 
-from helpers.user import phone_validation
+from helpers.user import is_phone_number_valid
 
 app = Flask(__name__)
 
@@ -81,6 +81,7 @@ def get_users():
     if users_list:
         for user in users_list:
             del user['_id']
+            del user['password']
         res = make_response(jsonify({"res":users_list}), 200)
         return res
 
@@ -93,6 +94,7 @@ def get_user_by_username(username):
     
     if user:
         del user['_id']
+        del user['password']
         res = make_response(jsonify({"res":user}), 200)
         return res
 
@@ -134,6 +136,11 @@ def put_col_mem(email,newEmail):
     else:
         res = make_response(jsonify({"error": "--------ERROR-----"}), 404)
         return res
+
+@app.route("/phone_number/<username>/<new_phone_number>", methods=["POST"])
+def update_phone_number(new_phone_number):
+    pass
+
 
 # Delete Method
 

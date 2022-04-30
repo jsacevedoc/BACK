@@ -14,7 +14,7 @@ def get_all_users():
 def get_user(username):
     return users.find_one({"user_name": username})
 
-def update_email(email,newEmail):
+def update_email(email, newEmail):
     try:
         myquery = { "email_address": email }
         newvalues = { "$set": { "email_address": newEmail } }
@@ -22,3 +22,6 @@ def update_email(email,newEmail):
         return True
     except:
         return False
+
+def update_phone_number(username, new_number):
+    pass
