@@ -139,6 +139,7 @@ def email_update(email,new_email):
         return res
 
 @app.route("/<username>/phone_number", methods=["PUT"])
+@cross_origin()
 def update_phone_number(username):
     new_number = request.args.get('phone_number')
     result = update_email(username, new_number)
