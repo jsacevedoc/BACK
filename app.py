@@ -3,31 +3,13 @@ from db import count_users, get_all_users, get_user, update_email
 import requests
 import re
 
-from helpers.user import phone_validation
+from helpers.user import phone_validation, validate_user
 
 app = Flask(__name__)
 
 PORT = 3200
 
-# # Get Method 
-
-INFO = {
-    "languages": {
-        "es":"Spanish",
-        "en":"English",
-        "fr":"French",
-    },
-    "colors":{
-        "r":"red",
-        "g":"green",
-        "b":"blue",
-    },
-    "clouds":{
-        "IBM":"IBM CLOUD",
-        "AMAZON":"AWS",
-        "MICROSOFT":"AZURE",
-    }
-}
+# Get Methods 
 
 @app.route("/")
 def home():
@@ -59,7 +41,7 @@ def get_json():
     res = make_response(jsonify(INFO), 200)
     return res
 
-@app.route("/json/<collection>/<member>")   #get data with path 
+@app.route("/json/<collection>/<member>") 
 def get_data(collection, member):
     print("getting the value of %s in the collection %s"%(member,collection))
     if collection in INFO:
@@ -74,7 +56,7 @@ def get_data(collection, member):
     res = make_response(jsonify({"error": "Not found"}), 404)
     return res
 
-@app.route("/users")   #get data with path 
+@app.route("/users")  
 def get_users():
     users_list = get_all_users()
 
@@ -87,7 +69,7 @@ def get_users():
     res = make_response(jsonify({"error": "Not found"}), 404)
     return res
 
-@app.route("/users/<username>")   #get data with path 
+@app.route("/users/<username>") 
 def get_user_by_username(username):
     user = get_user(username)
     
@@ -99,8 +81,24 @@ def get_user_by_username(username):
     res = make_response(jsonify({"error": "Not found"}), 404)
     return res
 
+@app.route("/users/sign-in/<username>/<password>") 
+def sign_in(username, password):
+    user = get_user(username)
 
-# Post Method
+    if user:
+        del user['_id'] 
+    else:
+        return make_response(jsonify({"error": "User not found"}), 404)
+
+    is_valid = validate_user(user, password)
+
+    if is_valid:
+        return  make_response(jsonify({"access_token":hash(user["user_name"])}), 200)
+    
+    return make_response(jsonify({"error": "Username and password don't match"}), 404)
+
+
+# Post Methods
 
 @app.route("/json/<collection>", methods=["POST"])
 def create_col(collection):
@@ -123,7 +121,7 @@ def email_verification(email):
     else:
         return  make_response(jsonify({"Result":"The mail does not have a valid syntax"}))
 
-# Put Method
+# Put Methods
 
 @app.route("/newemail/<email>/<new_email>", methods=["GET", "POST","PUT"])
 def email_update(email,new_email):
@@ -135,7 +133,7 @@ def email_update(email,new_email):
         res = make_response(jsonify({"error": "NOT FOUND"}), 404)
         return res
 
-# Delete Method
+# Delete Methods
 
 @app.route("/json/<collection>", methods=["DELETE"])
 def delete_col(collection):
