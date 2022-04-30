@@ -1,4 +1,5 @@
 from flask import Flask, render_template, make_response, jsonify, request
+from flask_cors import CORS, cross_origin
 from db import count_users, get_all_users, get_user, update_email, update_phone_number
 import requests
 import re
@@ -6,6 +7,8 @@ import re
 from helpers.user import is_phone_number_valid, validate_user
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 PORT = 3200
 
@@ -139,7 +142,8 @@ def email_update(email,new_email):
 def update_phone_number(username):
     new_number = request.args.get('phone_number')
     result = update_email(username, new_number)
-    if result:
+
+    if result and is_phone_number_valid(new_number):
         res = make_response(jsonify({}), 200)
     else:
         res = make_response(jsonify({}), 404)
