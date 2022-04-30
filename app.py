@@ -7,8 +7,8 @@ import re
 from helpers.user import is_phone_number_valid, validate_user
 
 app = Flask(__name__)
-cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+cors = CORS(app, resources={r"/foo": {"origins": "http://localhost:port"}})
 
 PORT = 3200
 
@@ -81,7 +81,7 @@ def email_update(email,new_email):
         return res
 
 @app.route("/<username>/phone_number", methods=["PUT"])
-@cross_origin()
+@cross_origin(origin='*', headers=['Content- Type','Authorization'])
 def update_phone(username):
     new_number = request.json['phone_number']
 
