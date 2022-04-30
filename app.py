@@ -3,7 +3,7 @@ from db import count_users, get_all_users, get_user, update_email, update_phone_
 import requests
 import re
 
-from helpers.user import is_phone_number_valid
+from helpers.user import is_phone_number_valid, validate_user
 
 app = Flask(__name__)
 
@@ -145,7 +145,7 @@ def update_phone_number(username):
         res = make_response(jsonify({}), 200)
     else:
         res = make_response(jsonify({}), 404)
-        
+
     return res
 
 
