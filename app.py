@@ -140,12 +140,15 @@ def email_update(email,new_email):
 
 @app.route("/<username>/phone_number", methods=["PUT"])
 @cross_origin()
-def update_phone_number(username):
-    new_number = request.args.get('phone_number')
-    result = update_email(username, new_number)
+def update_phone(username):
+    new_number = request.json['phone_number']
 
-    if result and is_phone_number_valid(new_number):
-        res = make_response(jsonify({}), 200)
+    if is_phone_number_valid(new_number):
+        result = update_phone_number(username, new_number)
+        if result:
+            res = make_response(jsonify({}), 200)
+        else:
+            res = make_response(jsonify({}), 400)
     else:
         res = make_response(jsonify({}), 404)
 
