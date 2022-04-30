@@ -137,9 +137,16 @@ def put_col_mem(email,newEmail):
         res = make_response(jsonify({"error": "--------ERROR-----"}), 404)
         return res
 
-@app.route("/phone_number/<username>/<new_phone_number>", methods=["POST"])
-def update_phone_number(new_phone_number):
-    pass
+@app.route("/<username>/phone_number", methods=["PUT"])
+def update_phone_number(username):
+    new_number = request.args.get('phone_number')
+    result = update_email(username, new_number)
+    if result:
+        res = make_response(jsonify({}), 200)
+    else:
+        res = make_response(jsonify({}), 404)
+        
+    return res
 
 
 # Delete Method
