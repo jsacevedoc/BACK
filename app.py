@@ -87,6 +87,7 @@ def get_user_by_username(username):
     return res
 
 @app.route("/users/sign-in/<username>/<password>") 
+@cross_origin()
 def sign_in(username, password):
     user = get_user(username)
 
